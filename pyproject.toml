@@ -1,0 +1,11 @@
+[project]
+name = "ai-crawl-scan"
+version = "0.1.0"
+description = "AI (browser-use) authenticated crawl feeding a ZAP active scan, config-matched to production runner.js"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "browser-use[aws,video]>=0.13.8",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+]

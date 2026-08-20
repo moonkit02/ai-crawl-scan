@@ -1,0 +1,13 @@
+.git/
+.venv/
+resources/
+old-resource/
+misc/
+dashboard/
+__pycache__/
+*.pyc
+*.log
+.env
+run.sh
+progress.json
+uv.lock

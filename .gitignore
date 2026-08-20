@@ -1,0 +1,9 @@
+.env
+.venv/
+resources/*
+__pycache__/
+*.pyc
+uv.lock
+
+# keep the irreplaceable human-crawl baseline tracked
+!resources/manual-163824.json
