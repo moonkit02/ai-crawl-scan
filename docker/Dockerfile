@@ -7,21 +7,18 @@ FROM ghcr.io/zaproxy/zaproxy:stable
 
 USER root
 
-# Python + the system libs browser-use's Chromium needs (installed via playwright --with-deps)
+# Python + a real Chromium. browser-use 0.13 drives a system browser over CDP (not playwright);
+# it auto-detects /usr/bin/chromium and adds --no-sandbox in Docker itself.
 RUN apt-get update && apt-get install -y \
       python3 python3-venv python3-pip curl \
+      chromium fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# Browsers go to a world-readable path so the non-root `zap` user can launch Chromium too.
-ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
-
-# Python env: browser-use (crawler) + httpx/dotenv (scan client), then the Chromium binary.
+# Python env: browser-use (crawler) + httpx/dotenv (scan client).
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
 RUN pip install --upgrade pip && \
-    pip install "browser-use[aws,video]>=0.13.8" "httpx>=0.27" "python-dotenv>=1.0" && \
-    playwright install --with-deps chromium && \
-    chmod -R a+rX /opt/ms-playwright
+    pip install "browser-use[aws,video]>=0.13.8" "httpx>=0.27" "python-dotenv>=1.0"
 
 WORKDIR /app
 # Build context is the repo root (build with: docker build -f docker/Dockerfile -t ai-crawl-scan .)
